@@ -1,50 +1,44 @@
 # repro: `@atlaskit/top-layer@1.6.1` empty animations barrel
 
-Minimal Vite + React 19 app that surfaces the runtime crash caused by
+Minimal Webpack + React 19 app that surfaces a runtime crash caused by
 `@atlaskit/top-layer@1.6.1` shipping an empty `entry-points/animations.js`
 barrel while four consumer packages (`tooltip`, `select`, `popup`,
 `modal-dialog`) at their latest published versions still import from it.
 
 ## Symptom
 
-The bundler (Vite / rolldown) fails the build with:
-
-```
-[MISSING_EXPORT] "fade" is not exported by "node_modules/@atlaskit/top-layer/dist/esm/entry-points/animations.js"
-[MISSING_EXPORT] "slideAndFade" is not exported by "node_modules/@atlaskit/top-layer/dist/esm/entry-points/animations.js"
-[MISSING_EXPORT] "popupMotion" is not exported by "node_modules/@atlaskit/top-layer/dist/esm/entry-points/animations.js"
-[MISSING_EXPORT] "dialogMotion" is not exported by "node_modules/@atlaskit/top-layer/dist/esm/entry-points/animations.js"
-```
-
-Less-strict bundlers (Webpack / Rspack, as used in `atlassian-embedded-crowd`)
-compile the bundle successfully but the browser crashes at load:
+Webpack compiles the bundle without errors, but the browser crashes at load:
 
 ```
 Uncaught TypeError: (0 , sv.slideAndFade) is not a function
 ```
+
+(Stricter bundlers such as Vite/rolldown fail at build time with
+`[MISSING_EXPORT] "slideAndFade" is not exported by …/entry-points/animations.js`.
+Webpack accepts the empty barrel silently.)
 
 ## What this app does
 
 `src/App.tsx` renders one instance of each affected `@atlaskit` component:
 
 - `<Tooltip>` — imports `fade` and `slideAndFade`
-- `<Select>` — imports `slideAndFade` (from its PopupSelect submodule)
+- `<Select>` — imports `slideAndFade` (via its PopupSelect submodule)
 - `<Popup>` — imports `popupMotion`
 - `<ModalDialog>` — imports `dialogMotion`
 
 ## Reproduce
 
 ```bash
-cd /Users/fnowakowski/Workspace/repro-atlaskit-top-layer-animations
 touch yarn.lock          # avoids Yarn detecting a parent-tree project
 yarn install
-yarn build               # fails with 4 MISSING_EXPORT errors
+yarn build               # succeeds with 2 warnings (bundle size only)
+yarn verify              # exit 1 — bundle will crash at runtime
 ```
 
-Or run in dev to see the crash in the browser:
+Or run in dev to see the crash live in the browser:
 
 ```bash
-yarn dev                 # then open http://localhost:5173
+yarn dev                 # opens http://localhost:5173
 ```
 
 ## Verify the pin fixes it
@@ -61,11 +55,11 @@ Then:
 
 ```bash
 yarn install
-yarn build               # exit 0, bundle written to dist/
-yarn preview             # serve the built bundle, no crash
+yarn build
+yarn verify              # exit 0 — bundle is safe
 ```
 
-## Root cause (per Atlassian's top-layer team)
+## Root cause (per the top-layer team)
 
 The empty barrel in 1.6.1 is **intentional** — the animation-preset public
 surface was removed during the Compiled CSS migration (1.4.0) and refactored

@@ -2,12 +2,11 @@
   "name": "repro-atlaskit-top-layer-animations",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "description": "Minimal React app that surfaces the runtime TypeError caused by @atlaskit/top-layer@1.6.1 shipping an empty animations barrel.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "verify": "node scripts/verify-bundle.mjs"
   },
   "dependencies": {
     "@atlaskit/button": "^24.3.2",
@@ -19,11 +18,20 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-react": "^8.0.1",
+    "@babel/preset-typescript": "^8.0.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-    "@vitejs/plugin-react": "^6.0.3",
+    "babel-loader": "^10.1.1",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.7",
+    "style-loader": "^4.0.0",
     "typescript": "^5.9.3",
-    "vite": "^8.1.4"
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-server": "^6.0.0"
   },
   "packageManager": "yarn@4.9.4"
 }
