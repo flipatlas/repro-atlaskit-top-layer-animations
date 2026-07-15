@@ -1,0 +1,20 @@
+{
+  "name": "repro-atlaskit-top-layer-animations",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal reproduction: @atlaskit/top-layer@1.6.1 ships an empty animations barrel that breaks tooltip/select/popup/modal-dialog at import time.",
+  "scripts": {
+    "repro": "node scripts/repro.mjs",
+    "verify:fix": "yarn install --mode update-lockfile && yarn install && node scripts/repro.mjs"
+  },
+  "dependencies": {
+    "@atlaskit/modal-dialog": "16.1.2",
+    "@atlaskit/popup": "5.1.1",
+    "@atlaskit/select": "22.5.0",
+    "@atlaskit/tooltip": "23.1.0",
+    "@atlaskit/top-layer": "1.6.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "packageManager": "yarn@4.9.4"
+}
