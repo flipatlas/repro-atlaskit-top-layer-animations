@@ -2,3 +2,5 @@ node_modules/
 .yarn/cache
 .yarn/install-state.gz
 .pnp.*
+.idea/
+.DS_Store

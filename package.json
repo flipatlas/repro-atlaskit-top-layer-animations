@@ -2,19 +2,28 @@
   "name": "repro-atlaskit-top-layer-animations",
   "version": "1.0.0",
   "private": true,
-  "description": "Minimal reproduction: @atlaskit/top-layer@1.6.1 ships an empty animations barrel that breaks tooltip/select/popup/modal-dialog at import time.",
+  "type": "module",
+  "description": "Minimal React app that surfaces the runtime TypeError caused by @atlaskit/top-layer@1.6.1 shipping an empty animations barrel.",
   "scripts": {
-    "repro": "node scripts/repro.mjs",
-    "verify:fix": "yarn install --mode update-lockfile && yarn install && node scripts/repro.mjs"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@atlaskit/modal-dialog": "16.1.2",
-    "@atlaskit/popup": "5.1.1",
-    "@atlaskit/select": "22.5.0",
-    "@atlaskit/tooltip": "23.1.0",
-    "@atlaskit/top-layer": "1.6.1",
-    "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "@atlaskit/button": "^24.3.2",
+    "@atlaskit/modal-dialog": "^16.1.2",
+    "@atlaskit/popup": "^5.1.1",
+    "@atlaskit/select": "^22.5.0",
+    "@atlaskit/tooltip": "^23.1.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^6.0.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.4"
   },
   "packageManager": "yarn@4.9.4"
 }
